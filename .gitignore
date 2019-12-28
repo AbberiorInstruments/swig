@@ -158,6 +158,13 @@ Examples/java/doxygen/javadocs
 Examples/test-suite/javascript/*/
 *.gyp
 
+# Matlab
+*.mex*
+Examples/test-suite/matlab/[+]*/
+Examples/test-suite/matlab/Swig*.m
+Examples/matlab/*/[+]*/
+Examples/matlab/*/Swig*.m
+
 # OCaml
 Examples/test-suite/ocaml/*.ml*
 Examples/test-suite/ocaml/*.cm*

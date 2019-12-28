@@ -1,0 +1,68 @@
+#######################################################################
+# Makefile for matlab test-suite
+#######################################################################
+
+LANGUAGE        = matlab
+MATLAB          = @MATLAB@
+MATLAB_OPTS     = @MATLAB_OPTS@
+MATLAB_EXEC     = @MATLAB_EXEC@
+SCRIPTSUFFIX    = _runme
+
+srcdir       = @srcdir@
+top_srcdir   = @top_srcdir@
+top_builddir = @top_builddir@
+
+CPP_TEST_BROKEN += \
+	arrays_global
+
+include $(srcdir)/../common.mk
+
+# Custom tests - tests with additional commandline options
+# none!
+
+# Rules for the different types of tests
+%.cpptest:
+	$(setup)
+	+$(swig_and_compile_cpp)
+	$(run_testcase)
+
+%.ctest:
+	$(setup)
+	+$(swig_and_compile_c)
+	$(run_testcase)
+
+%.multicpptest:
+	$(setup)
+	+$(swig_and_compile_multi_cpp)
+	$(run_testcase)
+
+# Runs the testcase. A testcase is only run if
+# a file is found which has _runme.m appended after the testcase name.
+run_testcase = \
+	if [ -f $(SCRIPTDIR)/$(SCRIPTPREFIX)$*$(SCRIPTSUFFIX).m ]; then \
+	 RUNSCRIPT="\
+	  try; \
+	    $(SCRIPTPREFIX)$*$(SCRIPTSUFFIX); \
+	  catch err; \
+	    fprintf(1, ['ERROR: ' err.message '\\\n']); \
+	    fprintf(2, ['ERROR: ' err.message '\\\n']); \
+	    exit(1); \
+	    end; \
+	  exit(0)" ; \
+	 env LD_LIBRARY_PATH=".:$$LD_LIBRARY_PATH" MATLABPATH="$(srcdir):$(SCRIPTDIR):$$MATLAB_PATH" \
+	 $(RUNTOOL) "$(MATLAB)" $(MATLAB_OPTS) $(MATLAB_EXEC) "$$RUNSCRIPT" \>/dev/null; \
+	 if [ $$? -ne 0 ] ; then \
+	   echo "   $* failed" $(RUNPIPE) ; \
+	 else \
+	   echo "   $* passed" $(RUNPIPE) ; \
+	 fi \
+	else \
+	   echo "   $* build passed (no runme test present)" $(RUNPIPE) ; \
+	fi
+
+# Clean: remove the generated .m file
+%.clean:
+	@rm -rf $*.m +$*;
+
+clean:
+	$(MAKE) -f $(top_builddir)/$(EXAMPLES)/Makefile SRCDIR="$(SRCDIR)" matlab_clean

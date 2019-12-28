@@ -1,0 +1,25 @@
+a = inout.AddOne1(1);
+if (a ~= 2)
+  error
+end
+
+a = inout.AddOne3(1,1,1);
+if (a ~= [2,2,2])
+  error
+end
+
+a = inout.AddOne1p((1,1));
+if (a ~= (2,2))
+  error
+end
+
+a = inout.AddOne2p((1,1),1);
+if (a ~= [(2,2),2])
+  error
+end
+
+a = inout.AddOne3p(1,(1,1),1);
+if (a ~= [2,(2,2),2])
+  error
+end
+

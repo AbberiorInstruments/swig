@@ -60,6 +60,7 @@ eswig_SOURCES =	CParse/cscanner.c		\
 		Modules/lang.cxx		\
 		Modules/lua.cxx			\
 		Modules/main.cxx		\
+		Modules/matlab.cxx		\
 		Modules/mzscheme.cxx		\
 		Modules/nested.cxx		\
 		Modules/ocaml.cxx		\

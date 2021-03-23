@@ -1299,6 +1299,7 @@ void Swig_offset_string(String *s, int number) {
 
 
 #ifdef HAVE_PCRE
+#define PCRE_STATIC
 #include <pcre.h>
 
 static int split_regex_pattern_subst(String *s, String **pattern, String **subst, const char **input)

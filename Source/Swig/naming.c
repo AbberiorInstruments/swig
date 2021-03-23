@@ -1092,6 +1092,7 @@ static DOH *get_lattr(Node *n, List *lattr) {
 }
 
 #ifdef HAVE_PCRE
+#define PCRE_STATIC
 #include <pcre.h>
 
 static int name_regexmatch_value(Node *n, String *pattern, String *s) {
